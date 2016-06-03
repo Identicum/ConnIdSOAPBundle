@@ -22,8 +22,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.jws.WebService;
 import net.tirasa.connid.bundles.soap.exceptions.ProvisioningException;
@@ -189,11 +191,15 @@ public class ProvisioningImpl implements Provisioning {
         LOG.debug("Query request received");
 
         List<WSUser> results = new ArrayList<WSUser>();
+        Map<String, String> columnsMappings = new HashMap<String, String>();
+        columnsMappings.put("USERID", "userId");
+        columnsMappings.put("CAPSID", "capsId");
+        columnsMappings.put("COMPANYNAME", "companyName");
 
         Connection conn = null;
         try {
 
-            String queryString = "SELECT * FROM user" + (query == null ? "" : " WHERE " + query.toString());
+            String queryString = "SELECT capsId, userId, password, type, telephone, name, surname, fullname, companyName FROM user" + (query == null ? "" : " WHERE " + query.toString());
 
             queryString = queryString.replaceAll("__NAME__", "userId").
                     replaceAll("__UID__", "userId").
@@ -218,11 +224,19 @@ public class ProvisioningImpl implements Provisioning {
 
                 for (int i = 0; i < metaData.getColumnCount(); i++) {
                     WSAttributeValue attr = new WSAttributeValue();
-                    attr.setName(metaData.getColumnLabel(i + 1));
+                    String columnName = metaData.getColumnLabel(i + 1);
+                    if(columnsMappings.containsKey(columnName))
+                    {
+                    	attr.setName(columnsMappings.get(columnName));
+                    }
+                    else
+                    {
+                    	attr.setName(columnName.toLowerCase());
+                    }
                     if (StringUtils.isNotBlank(rs.getString(i + 1))) {
                         attr.addValue(rs.getString(i + 1));
                     }
-                    if ("userId".equalsIgnoreCase(metaData.getColumnName(i + 1))) {
+                    if ("userId".equalsIgnoreCase(attr.getName())) {
                         attr.setKey(true);
                         user.setAccountid(rs.getString(i + 1));
                     }

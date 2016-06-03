@@ -1,4 +1,4 @@
-target
-/utilities/target/
-/wssample/target/
-/connector/target/
+target/
+.classpath
+.project
+.DS_Store
