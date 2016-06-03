@@ -1,0 +1,134 @@
+<resource oid="00000000-0000-1de4-0002-000000000004"
+          xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+          xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3"
+          xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3"
+          xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+          xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3"
+          xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3">
+   <name>Test WS 2</name>
+   <connectorRef oid="0219fdb7-fee5-4909-845a-65962fc1066d" type="c:ConnectorType"><!-- ICF net.tirasa.connid.bundles.soap.WebServiceConnector v1.4.1 --></connectorRef>
+   <connectorConfiguration xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
+      <icfc:configurationProperties xmlns:gen14="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/net.tirasa.connid.bundles.soap/net.tirasa.connid.bundles.soap.WebServiceConnector">
+         <gen14:endpoint>http://10.1.16.55:8080/wssample/services/provisioning</gen14:endpoint>
+         <gen14:servicename>net.tirasa.connid.bundles.soap.provisioning.interfaces.Provisioning</gen14:servicename>
+      </icfc:configurationProperties>
+   </connectorConfiguration>
+   <schema>
+      <definition>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ra="http://midpoint.evolveum.com/xml/ns/public/resource/annotation-3"
+            xmlns:tns="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3"
+            xmlns:a="http://prism.evolveum.com/xml/ns/public/annotation-3"
+            elementFormDefault="qualified"
+            targetNamespace="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3">
+            <xsd:import namespace="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3"/>
+            <xsd:import namespace="http://prism.evolveum.com/xml/ns/public/annotation-3"/>
+            <xsd:import namespace="http://midpoint.evolveum.com/xml/ns/public/resource/annotation-3"/>
+            <xsd:complexType name="AccountObjectClass">
+               <xsd:annotation>
+                  <xsd:appinfo>
+                     <ra:resourceObject/>
+                     <ra:identifier>icfs:uid</ra:identifier>
+                     <ra:secondaryIdentifier>icfs:name</ra:secondaryIdentifier>
+                     <ra:displayNameAttribute>icfs:name</ra:displayNameAttribute>
+                     <ra:namingAttribute>icfs:name</ra:namingAttribute>
+                     <ra:nativeObjectClass>__ACCOUNT__</ra:nativeObjectClass>
+                     <ra:kind>account</ra:kind>
+                     <ra:default>true</ra:default>
+                  </xsd:appinfo>
+               </xsd:annotation>
+               <xsd:sequence>
+                   <xsd:element ref="icfs:name"                      minOccurs="0"/>
+                   <xsd:element ref="icfs:uid"                       minOccurs="0"/>
+                   <xsd:element name="state"                         type="xsd:string" />
+                   <xsd:element name="name"                          type="xsd:string" />
+                   <xsd:element name="surname"                       type="xsd:string" />
+                   <xsd:element name="companyName"                   type="xsd:string" />
+                   <xsd:element name="job"                           type="xsd:string" />
+                   <xsd:element name="telephone"                     type="xsd:string" />
+                   <xsd:element name="fullname"                      type="xsd:string" />
+                   <xsd:element name="type"                          type="xsd:string" />
+                   <xsd:element name="password"                      type="xsd:string" />
+                   <xsd:element name="capsId"                        type="xsd:string" />
+                   <xsd:element name="userId"                        type="xsd:string" />
+               </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+      </definition>
+  </schema>
+  <schemaHandling>
+      <objectType>
+          <kind>account</kind>
+          <displayName>User</displayName>
+          <default>true</default>
+          <objectClass>ri:AccountObjectClass</objectClass>
+          <credentials>
+              <password>
+                  <outbound/>
+              </password>
+          </credentials>
+          <attribute>
+              <c:ref>icfs:name</c:ref>
+              <outbound>
+                  <source>
+                      <c:path>name</c:path>
+                  </source>
+              </outbound>
+          </attribute>
+          <attribute>
+              <c:ref>ri:name</c:ref>
+              <outbound>
+                  <source>
+                      <c:path>givenName</c:path>
+                  </source>
+              </outbound>
+          </attribute>
+          <attribute>
+              <c:ref>ri:surname</c:ref>
+              <outbound>
+                  <source>
+                      <c:path>familyName</c:path>
+                  </source>
+              </outbound>
+          </attribute>
+          <attribute>
+              <c:ref>ri:fullname</c:ref>
+              <outbound>
+                  <source>
+                      <c:path>fullName</c:path>
+                  </source>
+              </outbound>
+          </attribute>
+          <attribute>
+              <c:ref>ri:type</c:ref>
+              <outbound>
+                  <expression>
+                      <value>F</value>
+                  </expression>
+              </outbound>
+          </attribute>
+      </objectType>
+  </schemaHandling>
+  <capabilities>
+      <native xmlns:cap="http://midpoint.evolveum.com/xml/ns/public/resource/capabilities-3">
+         <cap:addRemoveAttributeValues/>
+         <cap:credentials>
+            <cap:password>
+               <cap:returnedByDefault>false</cap:returnedByDefault>
+            </cap:password>
+         </cap:credentials>
+         <cap:liveSync/>
+         <cap:testConnection/>
+         <cap:create/>
+         <cap:read/>
+         <cap:update/>
+         <cap:delete/>
+         <cap:script>
+            <cap:host>
+               <cap:type>connector</cap:type>
+            </cap:host>
+         </cap:script>
+      </native>
+   </capabilities>
+   <synchronization/>
+</resource>
