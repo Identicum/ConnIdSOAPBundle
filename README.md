@@ -26,3 +26,9 @@ Available from [releases](https://github.com/Tirasa/ConnIdSOAPBundle/releases).
  * [wiki](https://connid.atlassian.net/wiki/display/BASE/SOAP)
  * [issues](https://connid.atlassian.net/browse/SOAP)
  * <a href="https://travis-ci.org/Tirasa/ConnIdSOAPBundle"><img src="https://api.travis-ci.org/Tirasa/ConnIdSOAPBundle.png"/></a>
+
+## Changes made by Identicum
+
+ * wssample - Added logging configuration to the app
+ * wssample - Added logging interceptors to log inbound and outbound messages
+ * wssample - Added sql column names mapping to fix case issue with HSQLDB 
