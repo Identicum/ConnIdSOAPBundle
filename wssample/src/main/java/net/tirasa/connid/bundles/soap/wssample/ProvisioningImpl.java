@@ -35,7 +35,7 @@ import net.tirasa.connid.bundles.soap.to.WSAttributeValue;
 import net.tirasa.connid.bundles.soap.to.WSChange;
 import net.tirasa.connid.bundles.soap.to.WSUser;
 import net.tirasa.connid.bundles.soap.utilities.Operand;
-import org.apache.commons.lang.StringUtils;
+import org.identityconnectors.common.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -233,7 +233,7 @@ public class ProvisioningImpl implements Provisioning {
                     {
                     	attr.setName(columnName.toLowerCase());
                     }
-                    if (StringUtils.isNotBlank(rs.getString(i + 1))) {
+                    if (StringUtil.isNotBlank(rs.getString(i + 1))) {
                         attr.addValue(rs.getString(i + 1));
                     }
                     if ("userId".equalsIgnoreCase(attr.getName())) {
